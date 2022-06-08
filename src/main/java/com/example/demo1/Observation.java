@@ -2,6 +2,7 @@ package com.example.demo1;
 
 import javafx.geometry.Point3D;
 import javafx.scene.Group;
+import javafx.scene.paint.PhongMaterial;
 
 import java.util.ArrayList;
 
@@ -38,6 +39,8 @@ public class Observation extends Group {
             Point3D tl = Util3D.geoCoordTo3dCoord(f.t, f.l, 1.01f);
             Point3D tr = Util3D.geoCoordTo3dCoord(f.t, f.r, 1.01f);
 
+            PhongMaterial mat = scale.getMaterialFromScale(f.n);
+            if (mat == null) continue;
             Util3D.addQuadrilateral(this, tr, tl, bl, br, scale.getMaterialFromScale(f.n));
         }
     }

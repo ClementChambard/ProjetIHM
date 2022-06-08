@@ -8,7 +8,7 @@ import org.json.JSONObject;
 
 public class JsonReader {
 
-    public static Observation readJson(Group root, Scale scale, String json) {
+    public static Observation readJson(String json, Scale scale) {
         Observation obs = new Observation(scale);
         JSONObject obj = new JSONObject(json);
         JSONArray features = obj.getJSONArray("features");
@@ -29,8 +29,6 @@ public class JsonReader {
                 }
             }
         });
-        obs.genertateMesh();
-        root.getChildren().add(obs);
         return obs;
     }
 

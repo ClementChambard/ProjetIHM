@@ -30,6 +30,8 @@ public class Controller implements Initializable {
     @FXML
     private Pane pane3D;
 
+    private Observation obs = null;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //Create a Pane et graph scene root for the 3D content
@@ -48,36 +50,8 @@ public class Controller implements Initializable {
 
         root3D.getChildren().add(earth);
 
-        // Draw a line
+        PhongMaterial dot = new PhongMaterial(Color.RED);
 
-        // Draw a helix
-
-        // Draw city on the earth
-        Util3D.displayTown(root3D, "NYC", 40.639751f, -73.778925f);
-        Util3D.displayTown(root3D, "Brest", 48.390394f, -4.486076f);
-        Util3D.displayTown(root3D, "Marseille", 43.296482f, 5.369782f);
-        Util3D.displayTown(root3D, "Capetown", -33.924966f, 18.423300f);
-        Util3D.displayTown(root3D, "Istanbul", 41.008238f, 28.978359f);
-        Util3D.displayTown(root3D, "Reykjavik", 64.135321f, -21.817439f);
-        Util3D.displayTown(root3D, "Singapore", 1.352083f, 103.819839f);
-        Util3D.displayTown(root3D, "Seoul", 37.566535f, 126.977969f);
-
-        PhongMaterial redQuad = new PhongMaterial();
-        redQuad.setDiffuseColor(new Color(1, 0, 0, 0.01));
-        PhongMaterial greenQuad = new PhongMaterial();
-        greenQuad.setDiffuseColor(new Color(0,1,0,0.01));
-        PhongMaterial blueDot = new PhongMaterial(Color.BLUE);
-        /*for (int i = -90; i < 90; i+= 5)
-        {
-            for (int j = -180; j < 180; j+= 5)
-            {
-                Point3D tl = Util3D.geoCoordTo3dCoord(i, j, 1.1f);
-                Point3D tr = Util3D.geoCoordTo3dCoord(i, j+5, 1.1f);
-                Point3D bl = Util3D.geoCoordTo3dCoord(i+5, j, 1.1f);
-                Point3D br = Util3D.geoCoordTo3dCoord(i+5, j+5, 1.1f);
-                Util3D.addQuadrilateral(root3D, tr, tl, bl, br,  ((((Math.abs(i)+Math.abs(j))/5))%2 == 1)?redQuad:greenQuad);
-            }
-        }*/
         Scale scale = new Scale();
         scale.add(new  PhongMaterial(new Color(0.25, 1, 0, 0.01)), 1);
         scale.add(new  PhongMaterial(new Color(0.5, 1, 0, 0.01)), 50);
@@ -86,7 +60,8 @@ public class Controller implements Initializable {
         scale.add(new  PhongMaterial(new Color(1, 0.75, 0, 0.01)), 200);
         scale.add(new  PhongMaterial(new Color(1, 0.5, 0, 0.01)), 500);
         scale.add(new  PhongMaterial(new Color(1, 0.25, 0, 0.01)), 800);
-        scale.add(redQuad, 1000);
+        scale.add(new PhongMaterial(new Color(1, 0, 0, 0.01)), 1000);
+
         try (Reader reader = new FileReader("Delphinidae.json")) {
             BufferedReader rd = new BufferedReader(reader);
             StringBuilder sb = new StringBuilder();
@@ -94,11 +69,12 @@ public class Controller implements Initializable {
             while ((cp = rd.read()) != -1) {
                 sb.append((char) cp);
             }
-            JsonReader.readJson(root3D, scale, sb.toString());
+            obs = JsonReader.readJson(sb.toString(), scale);
+            obs.genertateMesh();
+            root3D.getChildren().add(obs);
         } catch (IOException e) {
             e.printStackTrace();
         }
-
 
         // Add a camera group
         PerspectiveCamera camera = new PerspectiveCamera(true);
@@ -123,11 +99,11 @@ public class Controller implements Initializable {
         pane3D.getChildren().addAll(subScene);
 
         // Create scene
-        Sphere sss = new Sphere(0.03);
-        sss.setMaterial(blueDot);
+        Sphere sss = new Sphere(0.02);
+        sss.setMaterial(dot);
         root3D.getChildren().add(sss);
         subScene.addEventHandler(MouseEvent.ANY, event -> {
-            if (event.getEventType() == MouseEvent.MOUSE_PRESSED && event.isAltDown()) {
+            if (event.getEventType() == MouseEvent.MOUSE_PRESSED && event.isControlDown()) {
 
                 PickResult pickResult = event.getPickResult();
                 Point3D spaceCoord = pickResult.getIntersectedPoint();
