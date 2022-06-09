@@ -24,6 +24,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.net.URL;
+import java.util.Date;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
@@ -52,16 +53,6 @@ public class Controller implements Initializable {
 
         PhongMaterial dot = new PhongMaterial(Color.RED);
 
-        Scale scale = new Scale();
-        scale.add(new  PhongMaterial(new Color(0.25, 1, 0, 0.01)), 1);
-        scale.add(new  PhongMaterial(new Color(0.5, 1, 0, 0.01)), 50);
-        scale.add(new  PhongMaterial(new Color(0.75, 1, 0, 0.01)), 100);
-        scale.add(new  PhongMaterial(new Color(1, 1, 0, 0.01)), 150);
-        scale.add(new  PhongMaterial(new Color(1, 0.75, 0, 0.01)), 200);
-        scale.add(new  PhongMaterial(new Color(1, 0.5, 0, 0.01)), 500);
-        scale.add(new  PhongMaterial(new Color(1, 0.25, 0, 0.01)), 800);
-        scale.add(new PhongMaterial(new Color(1, 0, 0, 0.01)), 1000);
-
         try (Reader reader = new FileReader("Delphinidae.json")) {
             BufferedReader rd = new BufferedReader(reader);
             StringBuilder sb = new StringBuilder();
@@ -69,12 +60,18 @@ public class Controller implements Initializable {
             while ((cp = rd.read()) != -1) {
                 sb.append((char) cp);
             }
-            obs = JsonReader.readJson(sb.toString(), scale);
+            obs = JsonReader.readJson(sb.toString(), Scale.baseColors);
             obs.genertateMesh();
             root3D.getChildren().add(obs);
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        Requete rq = new Requete("aaata", new Date(), new Date());
+        root3D.getChildren().remove(obs);
+        obs = rq.sendRequest();
+        obs.genertateMesh();
+        root3D.getChildren().add(obs);
 
         // Add a camera group
         PerspectiveCamera camera = new PerspectiveCamera(true);
@@ -95,7 +92,7 @@ public class Controller implements Initializable {
 
         SubScene subScene = new SubScene(root3D, 600, 600, true, SceneAntialiasing.BALANCED);
         subScene.setCamera(camera);
-        subScene.setFill(Color.GREY);
+        subScene.setFill(new Color(0.1, 0.1, 0.12, 1));
         pane3D.getChildren().addAll(subScene);
 
         // Create scene
@@ -114,7 +111,7 @@ public class Controller implements Initializable {
                 Point2D loc = Util3D.SpaceCoordToGeoCoord(spaceCoord);
                 // get geo-hash
                 Location location = new Location("mouse", loc.getX(), loc.getY());
-                System.out.println(GeoHashHelper.getGeohash(location));
+                System.out.println(GeoHashHelper.getGeohash(location, 3));
             }
         });
 

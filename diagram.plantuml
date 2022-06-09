@@ -26,7 +26,7 @@ class scale{
    +getColor()
 
 }
-class requete{
+class requete {
   -String espece
   -String scientific_name
   -Date debut
@@ -38,6 +38,8 @@ class requete{
     + JSON launchrequest()
 }
 class Jsonreader{
-      {static}observation readJson(Json fichier)
+      {static}+observation readJson(Json fichier)
 }
+
+feature --o observation
 @enduml

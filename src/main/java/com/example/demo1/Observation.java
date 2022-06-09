@@ -22,11 +22,19 @@ public class Observation extends Group {
     }
 
     private Scale scale;
-    private String espece;
+    private Requete requete;
     private ArrayList<Feature> features;
 
     public void addFeature(float t, float l, float r, float b, int n) {
         features.add(new Feature(t, l, r, b, n));
+    }
+
+    public Scale getScale() {
+        return scale;
+    }
+
+    public void setScale(Scale scale) {
+        this.scale = scale;
     }
 
     public void genertateMesh()

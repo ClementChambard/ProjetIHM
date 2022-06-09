@@ -8,11 +8,16 @@ import org.json.JSONObject;
 
 public class JsonReader {
 
-    public static Observation readJson(String json, Scale scale) {
-        Observation obs = new Observation(scale);
+    public static Observation readJson(String json, PhongMaterial[] materials) {
+        Observation obs = new Observation(null);
         JSONObject obj = new JSONObject(json);
         JSONArray features = obj.getJSONArray("features");
-        features.forEach(feature -> {
+        int min = 10000000;
+        int max = 0;
+        int avg = 0;
+        int nb = 0;
+        for (int i = 0; i < features.length(); i++) {
+            JSONObject feature = features.getJSONObject(i);
             String type = ((JSONObject) feature).getString("type");
             if (type.equals("Feature")) {
                 JSONObject geometry = ((JSONObject) feature).getJSONObject("geometry");
@@ -26,9 +31,15 @@ public class JsonReader {
                     float r = (float)coordinates.optJSONArray(2).getDouble(0);
                     float b = (float)coordinates.optJSONArray(2).getDouble(1);
                     obs.addFeature(t, l, r, b, n);
+                    if (n < min) min = n;
+                    if (n > max) max = n;
+                    avg += n;
+                    nb++;
                 }
             }
-        });
+        }
+        avg /= nb;
+        obs.setScale(new Scale(materials, min, max, avg));
         return obs;
     }
 
