@@ -52,6 +52,21 @@ public class Scale {
         return scales.get(index);
     }
 
+    public  int getScaleFromScale(int scale) {
+        int bestMatch = 10000000;
+        int i = -1;
+        for (int s : scales) if (scale > s)
+        {
+            if (scale - s < bestMatch)
+            {
+                bestMatch = scale - s;
+                i = scales.indexOf(s);
+            }
+        }
+        if (i == -1) return 0;
+        return i;
+    }
+
     public void setScale(int index, int scale) {
         scales.set(index, scale);
     }

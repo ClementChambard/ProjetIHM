@@ -1,16 +1,17 @@
 @startuml
-class observation{
+class Observation{
   -String espece
   -String scientific_name
   -Date debut
   -Date fin
-  -ArrayList<feature> zone
+  -ArrayList<Feature> zone
   -Scale scale
   +String getEspece()
   +String getScientificName()
 
 }
-class feature{
+
+class Feature {
    -float t
    -float b
    -float r
@@ -19,27 +20,23 @@ class feature{
 
 }
 
-class scale{
+class Scale{
    -ArrayList<int> scale
    -ArrayList<PhongMaterial> color
    +getScale()
    +getColor()
 
 }
-class requete {
-  -String espece
+class Requete {
   -String scientific_name
   -Date debut
   -Date fin
-    
-    
-
-
-    + JSON launchrequest()
 }
+
 class Jsonreader{
       {static}+observation readJson(Json fichier)
 }
 
-feature --o observation
+
+
 @enduml

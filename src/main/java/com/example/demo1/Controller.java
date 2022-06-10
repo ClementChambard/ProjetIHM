@@ -8,7 +8,6 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
 import javafx.scene.*;
-import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.PickResult;
 import javafx.scene.layout.Pane;
@@ -17,7 +16,6 @@ import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.MeshView;
 import javafx.scene.shape.Sphere;
 import com.interactivemesh.jfx.importer.obj.ObjModelImporter;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -61,16 +59,16 @@ public class Controller implements Initializable {
                 sb.append((char) cp);
             }
             obs = JsonReader.readJson(sb.toString(), Scale.baseColors);
-            obs.genertateMesh();
+            obs.genertateMesh(false);
             root3D.getChildren().add(obs);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        Requete rq = new Requete("aaata", new Date(), new Date());
+        Requete rq = new Requete("selachii", new Date(), new Date());
         root3D.getChildren().remove(obs);
         obs = rq.sendRequest();
-        obs.genertateMesh();
+        obs.genertateMesh(true);
         root3D.getChildren().add(obs);
 
         // Add a camera group
