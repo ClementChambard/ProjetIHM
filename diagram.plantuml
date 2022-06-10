@@ -1,9 +1,14 @@
 @startuml
+<<<<<<< HEAD
+=======
+namespace modele{
+>>>>>>> interface
 class Observation{
   -String espece
   -String scientific_name
   -Date debut
   -Date fin
+<<<<<<< HEAD
   -ArrayList<Feature> zone
   -Scale scale
   +String getEspece()
@@ -12,6 +17,14 @@ class Observation{
 }
 
 class Feature {
+=======
+
+  -Scale scale
+
+
+}
+class Feature{
+>>>>>>> interface
    -float t
    -float b
    -float r
@@ -23,6 +36,7 @@ class Feature {
 class Scale{
    -ArrayList<int> scale
    -ArrayList<PhongMaterial> color
+<<<<<<< HEAD
    +getScale()
    +getColor()
 
@@ -37,6 +51,35 @@ class Jsonreader{
       {static}+observation readJson(Json fichier)
 }
 
+=======
+
+
+}
+class Requete{
+
+  -String scientific_name
+  -Date debut
+  -Date fin
+    
+    
+
+
+    + Observetion sendrequest()
+}
+class Jsonreader{
+      {static}observation readJson(Json fichier)
+}
+Feature"1"--*"0..n"Observation
+Requete"1"--"1"Observation :< "est généré par "
+Scale"1"--*"0..n"Observation
+}
+class view{
+  +void display(Observation observation)
+}
+class controller{
+  +Observation sendrequest()
+}
+>>>>>>> interface
 
 
 @enduml
