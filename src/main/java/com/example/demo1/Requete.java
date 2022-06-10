@@ -51,4 +51,30 @@ public class Requete {
         return JsonReader.readJson(json, Scale.baseColors);
     }
 
+    public String sendRequestSimilar() {
+        String url = "https://api.obis.org/v3/taxon/complete/verbose/" + scientific_name;
+        String json = "";
+        HttpClient client = HttpClient.newBuilder()
+                .version(HttpClient.Version.HTTP_1_1)
+                .followRedirects(HttpClient.Redirect.NORMAL)
+                .connectTimeout(Duration.ofSeconds(20))
+                .build();
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url))
+                .timeout(Duration.ofMinutes(2))
+                .header("Content-Type", "application/json")
+                .GET()
+                .build();
+
+        try {
+            json = client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+                    .thenApply(HttpResponse::body).get(10, TimeUnit.SECONDS);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        String[] n = JsonReader.getTenFirstNames(json);
+        for (var s : n) System.out.println(s);
+        return json;
+    }
 }

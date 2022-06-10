@@ -43,4 +43,13 @@ public class JsonReader {
         return obs;
     }
 
+    public static String[] getTenFirstNames(String json) {
+        JSONArray arr = new JSONArray(json);
+        int n = 10;
+        if (arr.length() < n) n = arr.length();
+        String[] names = new String[10];
+        for (int i = 0; i < n; i++) names[i] = arr.getJSONObject(i).getString("scientificName");
+        return names;
+    }
+
 }
