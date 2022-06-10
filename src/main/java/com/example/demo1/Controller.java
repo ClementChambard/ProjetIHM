@@ -109,7 +109,8 @@ public class Controller implements Initializable {
                 Point2D loc = Util3D.SpaceCoordToGeoCoord(spaceCoord);
                 // get geo-hash
                 Location location = new Location("mouse", loc.getX(), loc.getY());
-                System.out.println(GeoHashHelper.getGeohash(location, 3));
+                obs.getRequete().getAtGeohash(GeoHashHelper.getGeohash(location, 3));
+                //System.out.println(GeoHashHelper.getGeohash(location, 3));
             }
         });
 
