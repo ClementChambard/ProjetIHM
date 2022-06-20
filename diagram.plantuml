@@ -1,12 +1,10 @@
 @startuml
-namespace modele{
+namespace Modele{
 class Observation{
-  -String espece
-  -String scientific_name
-  -Date debut
-  -Date fin
 
-  -Scale scale
+
+
+  +void generateMesh(bool histogramme)
 
 
 }
@@ -20,8 +18,10 @@ class Feature{
 }
 
 class Scale{
-   -ArrayList<int> scale
-   -ArrayList<PhongMaterial> color
+   -ArrayList<int> scales
+   -ArrayList<PhongMaterial> baseColor
+   +int getScaleFromScale(int scale)
+   +PhongMaterial getMaterialFromScale(int scale)
 
 
 }
@@ -35,20 +35,29 @@ class Requete{
 
 
     + Observetion sendrequest()
+    + String getAtGeoHash(String GeoHash)
+    +{static} String getGeoHashData(String GeoHash)
+    + String[] senRequestSimilar()
 }
 class Jsonreader{
-      {static}observation readJson(Json fichier)
+      {static} String[] getTenFirstNames(String json)
+      {static}Observation readJson(Json json,PhongMaterial[] materials)
+      {static}String[] getSpeciesList(String json)
 }
 Feature"1"--*"0..n"Observation
 Requete"1"--"1"Observation :< "est généré par "
 Scale"1"--*"0..n"Observation
 }
-class view{
+class View{
   +void display(Observation observation)
 }
-class controller{
-  +Observation sendrequest()
+class Controller{
+  +Initialize()
 }
+
+
+Controller--Modele
+View--Controller
 
 
 @enduml

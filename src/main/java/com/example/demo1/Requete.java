@@ -131,9 +131,9 @@ public class Requete {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        String[] names = JsonReader.getSpeciesList(json);
-        for (var s : names)
-        System.out.println(s);
+        //String[] names = JsonReader.getSpeciesList(json);
+        //for (var s : names)
+        //System.out.println(s);
         return json;
     }
 }

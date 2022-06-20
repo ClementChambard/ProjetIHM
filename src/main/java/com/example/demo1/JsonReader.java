@@ -52,15 +52,4 @@ public class JsonReader {
         return names;
     }
 
-    public static String[] getSpeciesList(String json) {
-        JSONObject obj = new JSONObject(json);
-        JSONArray arr = obj.getJSONArray("results");
-        String[] names = new String[arr.length()];
-        int i = 0;
-        for (var s : arr) {
-            JSONObject spe = (JSONObject) s;
-            names[i++] = spe.getString("scientificName");
-        }
-        return names;
-    }
 }
