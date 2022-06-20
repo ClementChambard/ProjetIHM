@@ -1,54 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.*?>
 
-<BorderPane prefHeight="750.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo1.Controller">
-   <opaqueInsets>
-      <Insets />
-   </opaqueInsets>
-   <top>
-      <Pane prefHeight="0.0" prefWidth="0.0" BorderPane.alignment="CENTER" />
-   </top>
-   <left>
-      <Pane fx:id="pane3D" prefHeight="600.0" prefWidth="600.0" BorderPane.alignment="CENTER" />
-   </left>
-   <center>
-      <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <BorderPane.margin>
-            <Insets bottom="5.0" />
-         </BorderPane.margin>
-         <cursor>
-            <Cursor fx:constant="CROSSHAIR" />
-         </cursor></Pane>
-   </center>
-   <right>
-      <TabPane maxHeight="625.0" prefHeight="625.0" prefWidth="231.0" side="LEFT" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
-        <tabs>
-            <Tab text="Rechercher">
-              <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-              </content>
-            </Tab>
-            <Tab text="info sur la zone">
-                <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                </content>
-            </Tab>
-            <Tab text="espece de la zone">
-                <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                </content>
-            </Tab>
-
-        </tabs>
-      </TabPane>
-   </right>
-   <bottom>
-      <GridPane prefHeight="125.0" scaleZ="5.0" BorderPane.alignment="CENTER">
+<VBox xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo1.Controller">
+   <children>
+      <HBox prefHeight="600.0">
+         <children>
+            <Pane fx:id="pane3D" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" />
+            <TabPane maxHeight="625.0" prefHeight="625.0" prefWidth="231.0" side="LEFT" tabClosingPolicy="UNAVAILABLE">
+              <tabs>
+                  <Tab text="Rechercher">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                    </content>
+                  </Tab>
+                  <Tab text="info sur la zone">
+                      <content>
+                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                      </content>
+                  </Tab>
+                  <Tab text="espece de la zone">
+                      <content>
+                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                      </content>
+                  </Tab>
+      
+                    </tabs>
+            </TabPane>
+         </children>
+      </HBox>
+      <GridPane prefHeight="125.0">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -80,9 +63,6 @@
             <Label text="Label" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
             <Separator prefWidth="200.0" GridPane.columnSpan="4" GridPane.valignment="TOP" />
          </children>
-         <BorderPane.margin>
-            <Insets />
-         </BorderPane.margin>
       </GridPane>
-   </bottom>
-</BorderPane>
+   </children>
+</VBox>
