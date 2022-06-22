@@ -8,20 +8,24 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
 import javafx.scene.*;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.PickResult;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.MeshView;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Sphere;
 import com.interactivemesh.jfx.importer.obj.ObjModelImporter;
+import com.example.demo1.AutoCompleteTextField;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.ResourceBundle;
 
@@ -31,10 +35,132 @@ public class Controller implements Initializable {
 
     private Observation obs = null;
 
+
+    private Point2D lastMousePosition = null;
+
+    @FXML
+    private Rectangle colorLegend1;
+
+    @FXML
+    private Rectangle colorLegend2;
+
+    @FXML
+    private Rectangle colorLegend3;
+
+    @FXML
+    private Rectangle colorLegend4;
+
+    @FXML
+    private Rectangle colorLegend5;
+
+    @FXML
+    private Rectangle colorLegend6;
+
+    @FXML
+    private Rectangle colorLegend7;
+
+    @FXML
+    private Rectangle colorLegend8;
+
+    @FXML
+    private Label textLabel1;
+
+    @FXML
+    private Label textLabel2;
+
+    @FXML
+    private Label textLabel3;
+
+    @FXML
+    private Label textLabel4;
+
+    @FXML
+    private Label textLabel5;
+
+    @FXML
+    private Label textLabel6;
+
+    @FXML
+    private Label textLabel7;
+
+    @FXML
+    private Label textLabel8;
+
+    @FXML
+    private CheckBox histoButton;
+
+    @FXML
+    private TextField scientificName;
+
+    @FXML
+    private DatePicker startDate;
+
+    @FXML
+    private DatePicker endDate;
+
+    private AutoCompleteTextField autoCompleteTextField ;
+
+    private Requete mainRequete = new Requete("");
+
+    @FXML
+    void togglehisto(){
+        if ( obs != null) {
+            obs.setHisto(histoButton.isSelected());
+
+        }
+    }
+
+    @FXML private Button rechercheBtn;
+
+    @FXML
+    void rechercher() {
+        if (obs != null) root3D.getChildren().remove(obs);
+        obs = mainRequete.sendRequest();
+        obs.setHisto(histoButton.isSelected());
+        root3D.getChildren().add(obs);
+    }
+
+    private Group root3D = new Group();
+
+    @FXML
+    void startChange()
+    {
+        mainRequete.setDebut(startDate.getValue());
+    }
+
+    @FXML
+    void endChange()
+    {
+        mainRequete.setFin(endDate.getValue());
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //Create a Pane et graph scene root for the 3D content
-        Group root3D = new Group();
+
+        Rectangle[] colorLegends = {colorLegend1, colorLegend2, colorLegend3, colorLegend4, colorLegend5, colorLegend6, colorLegend7, colorLegend8};
+        Label[] textLabels = {textLabel1, textLabel2, textLabel3, textLabel4, textLabel5, textLabel6, textLabel7, textLabel8};
+
+        autoCompleteTextField = new AutoCompleteTextField(scientificName);
+        autoCompleteTextField.setRequete(mainRequete);
+        autoCompleteTextField.setBtn(rechercheBtn);
+
+        //DateEntry dateEntryStart = new DateEntry();
+        //dateEntryStart.setBtn(rechercheBtn);
+        //dateEntryStart.setRequete(mainRequete);
+
+
+
+
+        //set color
+
+
+
+
+
+
+
+
 
         // Load geometry
         ObjModelImporter objImporter = new ObjModelImporter();
@@ -51,7 +177,7 @@ public class Controller implements Initializable {
 
         PhongMaterial dot = new PhongMaterial(Color.RED);
 
-        try (Reader reader = new FileReader("Delphinidae.json")) {
+       /* try (Reader reader = new FileReader("Delphinidae.json")) {
             BufferedReader rd = new BufferedReader(reader);
             StringBuilder sb = new StringBuilder();
             int cp;
@@ -59,16 +185,17 @@ public class Controller implements Initializable {
                 sb.append((char) cp);
             }
             obs = JsonReader.readJson(sb.toString(), Scale.baseColors);
-            obs.genertateMesh(false);
+            obs.setHisto(false);
             root3D.getChildren().add(obs);
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
 
-        Requete rq = new Requete("selachii", new Date(), new Date());
+        Requete rq = new Requete("selachii");
         root3D.getChildren().remove(obs);
         obs = rq.sendRequest();
-        obs.genertateMesh(true);
+        obs.setHisto(histoButton.isSelected());
+        obs.getScale().setLegendView(colorLegends, textLabels);
         root3D.getChildren().add(obs);
 
         // Add a camera group
@@ -80,7 +207,7 @@ public class Controller implements Initializable {
         light.setTranslateX(-180);
         light.setTranslateY(-90);
         light.setTranslateZ(-120);
-        light.getScope().addAll(root3D);
+        light.getScope().addAll(earth);
         root3D.getChildren().add(light);
 
         // Add ambient light

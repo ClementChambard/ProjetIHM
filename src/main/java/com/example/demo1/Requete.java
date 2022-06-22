@@ -3,7 +3,9 @@ package com.example.demo1;
 import com.example.demo1.GeoHash.GeoHash;
 
 import java.net.URI;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.util.Date;
 import java.net.http.*;
 import java.util.concurrent.TimeUnit;
@@ -11,19 +13,53 @@ import java.util.concurrent.TimeUnit;
 public class Requete {
 
     private String scientific_name;
-    private Date debut;
-    private Date fin;
+    private LocalDate debut;
+    private LocalDate fin;
+    private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-    public Requete(String scientific_name, Date debut, Date fin) {
-        this.scientific_name = scientific_name;
+    public LocalDate getDebut() {
+        return debut;
+    }
+
+    public LocalDate getFin() {
+        return fin;
+    }
+
+    public void setDebut(LocalDate debut) {
         this.debut = debut;
+    }
+
+    public void setFin(LocalDate fin) {
         this.fin = fin;
     }
 
+    public String[] setScientific_name(String scientific_name) {
+        this.scientific_name = scientific_name;
+        return sendRequestSimilar();
+    }
+
+    public Requete(String scientific_name) {
+        this.scientific_name = scientific_name;
+        this.debut = null;
+        this.fin = null;
+    }
+
     public String getURL() {
+
         StringBuilder sb = new StringBuilder();
         sb.append("http://api.obis.org/v3/occurrence/grid/3?scientificname=");
         sb.append(scientific_name);
+        if (debut != null) {
+            sb.append("&startdate=");
+            sb.append(debut);
+        }
+        if (fin != null) {
+            sb.append("&enddate=");
+            sb.append(fin);
+        }
+
+
+        //"https://api.obis.org/v3/occurrence?scientificname=Carcharhinus&startdate=2000-01-01&enddate=2020-01-01" -H "accept: */*"
         return sb.toString();
     }
 
@@ -54,7 +90,7 @@ public class Requete {
         return obs;
     }
 
-    public String sendRequestSimilar() {
+    public String[] sendRequestSimilar() {
         String url = "https://api.obis.org/v3/taxon/complete/verbose/" + scientific_name;
         String json = "";
         HttpClient client = HttpClient.newBuilder()
@@ -77,8 +113,8 @@ public class Requete {
             e.printStackTrace();
         }
         String[] n = JsonReader.getTenFirstNames(json);
-        for (var s : n) System.out.println(s);
-        return json;
+        //for (var s : n) System.out.println(s);
+        return n;
     }
 
     public String getAtGeohash(String geoHash)

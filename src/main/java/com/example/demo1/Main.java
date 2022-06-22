@@ -12,7 +12,7 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         Parent content = FXMLLoader.load(getClass().getResource("earthGui.fxml"));
-        stage.setTitle("Hello!");
+        stage.setTitle("OBIS aplication");
         stage.setScene(new Scene(content));
         stage.show();
     }

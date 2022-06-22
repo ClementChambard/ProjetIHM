@@ -38,8 +38,9 @@ public class JsonReader {
                 }
             }
         }
-        avg /= nb;
-        obs.setScale(new Scale(materials, min, max, avg));
+        if (nb != 0) avg /= nb;
+        obs.setScale(new Scale(materials, min, max, avg,nb));
+
         return obs;
     }
 

@@ -41,15 +41,28 @@ public class Observation extends Group {
         this.requete = requete;
     }
 
+    private Group groupFlat;
+    private Group groupHisto;
 
+
+    public void setHisto(boolean histo) {
+        if (groupFlat==null) groupFlat = genertateMesh(false);
+        if (groupHisto==null) groupHisto = genertateMesh(true);
+        this.getChildren().clear();
+        this.getChildren().add(histo ? groupHisto : groupFlat);
+
+    }
 
     public void setScale(Scale scale) {
         this.scale = scale;
     }
 
-    public void genertateMesh(boolean histogram)
+    public Group genertateMesh(boolean histogram)
     {
+        Group g = new Group();
         this.getChildren().clear();
+        this.getManagedChildren().clear();
+        System.gc();
         for (Feature f : features)
         {
             PhongMaterial mat = scale.getMaterialFromScale(f.n);
@@ -66,15 +79,16 @@ public class Observation extends Group {
                 Point3D ubr = Util3D.geoCoordTo3dCoord(f.b, f.r, height);
                 Point3D utl = Util3D.geoCoordTo3dCoord(f.t, f.l, height);
                 Point3D utr = Util3D.geoCoordTo3dCoord(f.t, f.r, height);
-                Util3D.addQuadrilateral(this, utr, utl, ubl, ubr, scale.getMaterialFromScale(f.n));
-                Util3D.addQuadrilateral(this, utl, utr, tr, tl, scale.getMaterialFromScale(f.n));
-                Util3D.addQuadrilateral(this, ubr, ubl, bl, br, scale.getMaterialFromScale(f.n));
-                Util3D.addQuadrilateral(this, utr, ubr, br, tr, scale.getMaterialFromScale(f.n));
-                Util3D.addQuadrilateral(this, ubl, utl, tl, bl, scale.getMaterialFromScale(f.n));
+                Util3D.addQuadrilateral(g, utr, utl, ubl, ubr, scale.getMaterialFromScale(f.n));
+                Util3D.addQuadrilateral(g, utl, utr, tr, tl, scale.getMaterialFromScale(f.n));
+                Util3D.addQuadrilateral(g, ubr, ubl, bl, br, scale.getMaterialFromScale(f.n));
+                Util3D.addQuadrilateral(g, utr, ubr, br, tr, scale.getMaterialFromScale(f.n));
+                Util3D.addQuadrilateral(g, ubl, utl, tl, bl, scale.getMaterialFromScale(f.n));
             }
             else
-                Util3D.addQuadrilateral(this, tr, tl, bl, br, scale.getMaterialFromScale(f.n));
+                Util3D.addQuadrilateral(g, tr, tl, bl, br, scale.getMaterialFromScale(f.n));
         }
+        return g;
     }
 
     public Observation(Scale scale) {
