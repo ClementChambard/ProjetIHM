@@ -3,6 +3,8 @@ package com.example.demo1;
 import com.example.demo1.GeoHash.GeoHashHelper;
 import com.example.demo1.GeoHash.Location;
 import com.interactivemesh.jfx.importer.ImportException;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
@@ -11,6 +13,7 @@ import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.PickResult;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
@@ -18,22 +21,24 @@ import javafx.scene.shape.MeshView;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Sphere;
 import com.interactivemesh.jfx.importer.obj.ObjModelImporter;
+
 import com.example.demo1.AutoCompleteTextField;
+import javafx.util.Duration;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.ResourceBundle;
+import java.time.LocalDate;
+import java.util.*;
 
 public class Controller implements Initializable {
     @FXML
     private Pane pane3D;
 
     private Observation obs = null;
+    private Timelapse timelapse = null;
 
 
     private Point2D lastMousePosition = null;
@@ -97,6 +102,28 @@ public class Controller implements Initializable {
 
     @FXML
     private DatePicker endDate;
+    @FXML
+    private ToggleButton start_stop;
+
+
+
+    @FXML
+    private ToggleButton stop;
+
+    @FXML
+    private Label timelapsLabel;
+
+    @FXML
+    private HBox commandTimelaps;
+
+    @FXML
+    private Label actualSpecie;
+
+    @FXML
+    private Label timeLapsYear;
+
+
+    private boolean timeLapsOn = false;
 
     private AutoCompleteTextField autoCompleteTextField ;
 
@@ -113,11 +140,47 @@ public class Controller implements Initializable {
     @FXML private Button rechercheBtn;
 
     @FXML
+    void stopTimelapse(){
+
+        timeLapsYear.setVisible(false);
+        timelapse.pause();
+        if (obs != null) root3D.getChildren().remove(obs);
+        obs = timelapse.getMotherObservation();
+        obs.setHisto(histoButton.isSelected());
+        root3D.getChildren().add(obs);
+
+    }
+
+    @FXML
     void rechercher() {
         if (obs != null) root3D.getChildren().remove(obs);
         obs = mainRequete.sendRequest();
         obs.setHisto(histoButton.isSelected());
         root3D.getChildren().add(obs);
+        actualSpecie.setText(obs.getRequete().getScientific_name());
+        if ((mainRequete.getFin() == null && mainRequete.getDebut() == null)
+                ||(mainRequete.getDebut().getYear()+5<mainRequete.getFin().getYear())||!timelapse.isInvalid()){
+            commandTimelaps.setVisible(true);
+            timelapsLabel.setVisible(true);
+
+
+            timelapse = new Timelapse(obs, this);
+
+
+
+
+        }else{
+            commandTimelaps.setVisible(false);
+            timelapsLabel.setVisible(false);
+            timeLapsYear.setVisible(false);
+
+
+
+
+        }
+
+
+
     }
 
     private Group root3D = new Group();
@@ -134,6 +197,40 @@ public class Controller implements Initializable {
         mainRequete.setFin(endDate.getValue());
     }
 
+    @FXML
+    void start_stopTimelaps(){
+       if (!timeLapsOn) {
+           start_stop.setText("||");
+           Integer i =0;
+            timelapse.start();
+
+
+       }else {
+           start_stop.setText("|>");
+           timelapse.pause();
+
+
+       }
+        timeLapsOn = !timeLapsOn;
+    }
+
+    public void replaceObs(Observation obs1)
+    {
+        root3D.getChildren().remove(obs);
+        obs = obs1;
+        root3D.getChildren().add(obs);
+        obs.setHisto(histoButton.isSelected());
+    }
+
+    public void replaceTimeLapsYear(LocalDate debut ,LocalDate fin){
+        timeLapsYear.setText(debut.getYear()+" to "+fin.getYear());
+
+    }
+
+    public Label getTimeLapsYear() {
+        return timeLapsYear;
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //Create a Pane et graph scene root for the 3D content
@@ -145,9 +242,6 @@ public class Controller implements Initializable {
         autoCompleteTextField.setRequete(mainRequete);
         autoCompleteTextField.setBtn(rechercheBtn);
 
-        //DateEntry dateEntryStart = new DateEntry();
-        //dateEntryStart.setBtn(rechercheBtn);
-        //dateEntryStart.setRequete(mainRequete);
 
 
 
@@ -197,6 +291,11 @@ public class Controller implements Initializable {
         obs.setHisto(histoButton.isSelected());
         obs.getScale().setLegendView(colorLegends, textLabels);
         root3D.getChildren().add(obs);
+        actualSpecie.setText(obs.getRequete().getScientific_name());
+        timelapse = new Timelapse(obs, this);
+        commandTimelaps.setVisible(false);
+        timelapsLabel.setVisible(false);
+        timeLapsYear.setVisible(false);
 
         // Add a camera group
         PerspectiveCamera camera = new PerspectiveCamera(true);
@@ -237,6 +336,7 @@ public class Controller implements Initializable {
                 // get geo-hash
                 Location location = new Location("mouse", loc.getX(), loc.getY());
                 obs.getRequete().getAtGeohash(GeoHashHelper.getGeohash(location, 3));
+                //Requete.getGeohashData()
                 //System.out.println(GeoHashHelper.getGeohash(location, 3));
             }
         });

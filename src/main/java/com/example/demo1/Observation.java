@@ -21,6 +21,7 @@ public class Observation extends Group {
         }
     }
 
+
     private Scale scale;
     private Requete requete;
     private ArrayList<Feature> features;
@@ -37,6 +38,8 @@ public class Observation extends Group {
         return requete;
     }
 
+
+
     public void setRequete(Requete requete) {
         this.requete = requete;
     }
@@ -46,8 +49,8 @@ public class Observation extends Group {
 
 
     public void setHisto(boolean histo) {
-        if (groupFlat==null) groupFlat = genertateMesh(false);
-        if (groupHisto==null) groupHisto = genertateMesh(true);
+        if (!histo && groupFlat==null) groupFlat = genertateMesh(false);
+        if (histo && groupHisto==null) groupHisto = genertateMesh(true);
         this.getChildren().clear();
         this.getChildren().add(histo ? groupHisto : groupFlat);
 

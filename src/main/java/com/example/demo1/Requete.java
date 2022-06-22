@@ -38,6 +38,10 @@ public class Requete {
         return sendRequestSimilar();
     }
 
+    public String getScientific_name() {
+        return scientific_name;
+    }
+
     public Requete(String scientific_name) {
         this.scientific_name = scientific_name;
         this.debut = null;

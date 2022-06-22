@@ -54,9 +54,32 @@
                                           <Insets bottom="30.0" top="10.0" />
                                        </VBox.margin>
                                     </DatePicker>
+                                    <Separator prefWidth="200.0" />
+                                    <Label fx:id="actualSpecie" alignment="CENTER" text="Actual species ">
+                                       <VBox.margin>
+                                          <Insets left="45.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <Separator prefWidth="200.0" />
+                                    <Label fx:id="timelapsLabel" alignment="CENTER" text="Timelaps">
+                                       <VBox.margin>
+                                          <Insets left="60.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <HBox fx:id="commandTimelaps" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0">
+                                       <children>
+                                          <ToggleButton fx:id="stop" mnemonicParsing="false" onAction="#stopTimelapse" text="stop" />
+                                          <ToggleButton fx:id="start_stop" mnemonicParsing="false" onAction="#start_stopTimelaps" text="|&gt;" />
+                                       </children>
+                                    </HBox>
+                                    <Label fx:id="timeLapsYear" alignment="CENTER" contentDisplay="CENTER" text="Timelaps year">
+                                       <VBox.margin>
+                                          <Insets left="50.0" />
+                                       </VBox.margin>
+                                    </Label>
                                     <Button fx:id="rechercheBtn" alignment="CENTER" contentDisplay="CENTER" disable="true" mnemonicParsing="false" onAction="#rechercher" text="Rechercher">
                                        <VBox.margin>
-                                          <Insets left="40.0" right="10.0" top="150.0" />
+                                          <Insets left="45.0" right="10.0" top="80.0" />
                                        </VBox.margin>
                                     </Button>
                                  </children>
