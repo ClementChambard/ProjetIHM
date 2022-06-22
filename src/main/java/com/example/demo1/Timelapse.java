@@ -71,9 +71,10 @@ public class Timelapse {
         timeline = new Timeline(new KeyFrame(
                 Duration.seconds(2),
                 ae -> {
-                    c.replaceObs(getNextObservation());
+                    Observation obs = getNextObservation();
+                    c.replaceObs(obs);
                     c.getTimeLapsYear().setVisible(true);
-                    c.replaceTimeLapsYear(getNextObservation().getRequete().getDebut(),getNextObservation().getRequete().getFin() );
+                    c.replaceTimeLapsYear(obs.getRequete().getDebut(),obs.getRequete().getFin() );
                 }
         ));
         timeline.setCycleCount(Animation.INDEFINITE);

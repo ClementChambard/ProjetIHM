@@ -79,7 +79,7 @@
                                     </Label>
                                     <Button fx:id="rechercheBtn" alignment="CENTER" contentDisplay="CENTER" disable="true" mnemonicParsing="false" onAction="#rechercher" text="Rechercher">
                                        <VBox.margin>
-                                          <Insets left="45.0" right="10.0" top="80.0" />
+                                          <Insets left="45.0" right="10.0" top="50.0" />
                                        </VBox.margin>
                                     </Button>
                                  </children>

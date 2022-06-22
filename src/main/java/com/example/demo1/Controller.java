@@ -141,14 +141,12 @@ public class Controller implements Initializable {
 
     @FXML
     void stopTimelapse(){
-
         timeLapsYear.setVisible(false);
+        start_stop.setText("|>");
+        timeLapsOn = false;
         timelapse.pause();
-        if (obs != null) root3D.getChildren().remove(obs);
-        obs = timelapse.getMotherObservation();
-        obs.setHisto(histoButton.isSelected());
-        root3D.getChildren().add(obs);
-
+        replaceObs(timelapse.getMotherObservation());
+        stop.setDisable(true);
     }
 
     @FXML
@@ -158,32 +156,21 @@ public class Controller implements Initializable {
         obs.setHisto(histoButton.isSelected());
         root3D.getChildren().add(obs);
         actualSpecie.setText(obs.getRequete().getScientific_name());
-        if ((mainRequete.getFin() == null && mainRequete.getDebut() == null)
-                ||(mainRequete.getDebut().getYear()+5<mainRequete.getFin().getYear())||!timelapse.isInvalid()){
+        timelapse = new Timelapse(obs, this);
+        if ((mainRequete.getDebut().getYear()+5<mainRequete.getFin().getYear())||!timelapse.isInvalid()){
             commandTimelaps.setVisible(true);
             timelapsLabel.setVisible(true);
-
-
-            timelapse = new Timelapse(obs, this);
-
-
-
-
         }else{
             commandTimelaps.setVisible(false);
             timelapsLabel.setVisible(false);
             timeLapsYear.setVisible(false);
-
-
-
-
         }
 
 
 
     }
 
-    private Group root3D = new Group();
+    private final Group root3D = new Group();
 
     @FXML
     void startChange()
@@ -201,16 +188,12 @@ public class Controller implements Initializable {
     void start_stopTimelaps(){
        if (!timeLapsOn) {
            start_stop.setText("||");
-           Integer i =0;
             timelapse.start();
-
-
        }else {
            start_stop.setText("|>");
            timelapse.pause();
-
-
        }
+        stop.setDisable(false);
         timeLapsOn = !timeLapsOn;
     }
 

@@ -63,6 +63,7 @@ public class AutoCompleteTextField {
                     }
                     if (entries.size() > 0)
                     {
+                        while (searchResult.remove(null));
                         populatePopup(searchResult);
                         if (!entriesPopup.isShowing())
                         {
