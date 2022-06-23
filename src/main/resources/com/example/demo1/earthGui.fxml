@@ -61,15 +61,15 @@
                                        </VBox.margin>
                                     </Label>
                                     <Separator prefWidth="200.0" />
-                                    <Label fx:id="timelapsLabel" alignment="CENTER" text="Timelaps">
+                                    <Label fx:id="timelapsLabel" alignment="CENTER" text="Timelapse">
                                        <VBox.margin>
                                           <Insets left="60.0" />
                                        </VBox.margin>
                                     </Label>
                                     <HBox fx:id="commandTimelaps" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0">
                                        <children>
-                                          <ToggleButton fx:id="stop" mnemonicParsing="false" onAction="#stopTimelapse" text="stop" />
-                                          <ToggleButton fx:id="start_stop" mnemonicParsing="false" onAction="#start_stopTimelaps" text="|&gt;" />
+                                          <ToggleButton fx:id="stop" disable="true" mnemonicParsing="false" onAction="#stopTimelapse" text="◼" />
+                                          <ToggleButton fx:id="start_stop" mnemonicParsing="false" onAction="#start_stopTimelaps" text="▶" />
                                        </children>
                                     </HBox>
                                     <Label fx:id="timeLapsYear" alignment="CENTER" contentDisplay="CENTER" text="Timelaps year">

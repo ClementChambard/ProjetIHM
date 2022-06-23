@@ -142,7 +142,7 @@ public class Controller implements Initializable {
     @FXML
     void stopTimelapse(){
         timeLapsYear.setVisible(false);
-        start_stop.setText("|>");
+        start_stop.setText("\u25B6");
         timeLapsOn = false;
         timelapse.pause();
         replaceObs(timelapse.getMotherObservation());
@@ -190,7 +190,7 @@ public class Controller implements Initializable {
            start_stop.setText("||");
             timelapse.start();
        }else {
-           start_stop.setText("|>");
+           start_stop.setText("\u25B6");
            timelapse.pause();
        }
         stop.setDisable(false);
