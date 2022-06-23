@@ -52,7 +52,7 @@ public class Requete {
 
         StringBuilder sb = new StringBuilder();
         sb.append("http://api.obis.org/v3/occurrence/grid/3?scientificname=");
-        sb.append(scientific_name);
+        sb.append(scientific_name.replace(" ", "%20"));
         if (debut != null) {
             sb.append("&startdate=");
             sb.append(debut);
@@ -95,7 +95,7 @@ public class Requete {
     }
 
     public String[] sendRequestSimilar() {
-        String url = "https://api.obis.org/v3/taxon/complete/verbose/" + scientific_name;
+        String url = "https://api.obis.org/v3/taxon/complete/verbose/" + scientific_name.replace(" ", "%20");
         String json = "";
         HttpClient client = HttpClient.newBuilder()
                 .version(HttpClient.Version.HTTP_1_1)
@@ -123,7 +123,7 @@ public class Requete {
 
     public String getAtGeohash(String geoHash)
     {
-        String url = "https://api.obis.org/v3/occurrence?scientificname="+ scientific_name +"&geometry=" + geoHash;
+        String url = "https://api.obis.org/v3/occurrence?scientificname="+ scientific_name.replace(" ", "%20") +"&geometry=" + geoHash;
         String json = "";
         HttpClient client = HttpClient.newBuilder()
                 .version(HttpClient.Version.HTTP_1_1)
@@ -144,7 +144,7 @@ public class Requete {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println(json);
+        //System.out.println(json);
         return json;
     }
 

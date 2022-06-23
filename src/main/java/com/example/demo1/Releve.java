@@ -1,10 +1,14 @@
 package com.example.demo1;
 
+import javafx.event.Event;
 import javafx.geometry.Insets;
+import javafx.scene.Cursor;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 
 public class Releve extends VBox {
 
@@ -15,7 +19,8 @@ public class Releve extends VBox {
     private String species;
 
 
-
+    private static Controller con;
+    public static void setCon(Controller c) { con = c; }
 
     public Releve(String scientificName,String order,String superclass,String recordedBy,String species,boolean allinfo){
         super();
@@ -54,6 +59,20 @@ public class Releve extends VBox {
             }
 
 
+        }
+        else
+        {
+            labelNom.setPadding(new Insets(0,0,6,0));
+            setOnMouseClicked(e -> {
+                con.replaceObs(new Requete(scientificName).sendRequest());
+            });
+            setOnMouseEntered(e -> {
+                setBackground(Background.fill(new Color(.8f, .8f, .8f, 1.f)));
+            });
+            setOnMouseExited(e -> {
+                setBackground(Background.EMPTY);
+            });
+            setCursor(Cursor.HAND);
         }
 
         getChildren().add(new Separator());

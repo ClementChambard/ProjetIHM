@@ -8,9 +8,15 @@ import java.util.ArrayList;
 
 public class Observation extends Group {
 
-    private class Feature {
+    public class Feature {
         private float t, l, r, b;
         private int n;
+
+        public int getN() { return n; }
+        public float getT() { return t; }
+        public float getB() { return b; }
+        public float getL() { return l; }
+        public float getR() { return r; }
 
         public Feature(float t, float l, float r, float b, int n) {
             this.t = t;
@@ -30,6 +36,7 @@ public class Observation extends Group {
         features.add(new Feature(t, l, r, b, n));
     }
 
+    public ArrayList<Feature> getFeatures() { return features; }
     public Scale getScale() {
         return scale;
     }

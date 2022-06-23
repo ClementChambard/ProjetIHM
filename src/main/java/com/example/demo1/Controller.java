@@ -11,6 +11,8 @@ import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
 import javafx.scene.*;
 import javafx.scene.control.*;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.PickResult;
 import javafx.scene.layout.AnchorPane;
@@ -25,6 +27,7 @@ import javafx.scene.shape.Sphere;
 import com.interactivemesh.jfx.importer.obj.ObjModelImporter;
 
 import com.example.demo1.AutoCompleteTextField;
+import javafx.stage.Popup;
 import javafx.util.Duration;
 
 import java.io.BufferedReader;
@@ -42,6 +45,7 @@ public class Controller implements Initializable {
     private Observation obs = null;
     private Timelapse timelapse = null;
     private ArrayList<Releve> listReleve= null;
+    private ArrayList<Releve> listeSpecies = null;
 
 
     private Point2D lastMousePosition = null;
@@ -110,6 +114,8 @@ public class Controller implements Initializable {
 
 
 
+
+
     @FXML
     private ToggleButton stop;
 
@@ -127,6 +133,9 @@ public class Controller implements Initializable {
 
     @FXML
     private VBox releveScroll;
+
+    @FXML
+    private VBox especeScroll;
 
 
     private boolean timeLapsOn = false;
@@ -158,10 +167,8 @@ public class Controller implements Initializable {
     @FXML
     void rechercher() {
         if (obs != null) root3D.getChildren().remove(obs);
-        obs = mainRequete.sendRequest();
-        obs.setHisto(histoButton.isSelected());
-        root3D.getChildren().add(obs);
-        actualSpecie.setText(obs.getRequete().getScientific_name());
+        replaceObs(mainRequete.sendRequest());
+
         timelapse = new Timelapse(obs, this);
         if (!(mainRequete.getDebut()==null || mainRequete.getFin()==null) && mainRequete.getDebut().getYear()+5<mainRequete.getFin().getYear()||!timelapse.isInvalid()){
             commandTimelaps.setVisible(true);
@@ -209,6 +216,7 @@ public class Controller implements Initializable {
         obs = obs1;
         root3D.getChildren().add(obs);
         obs.setHisto(histoButton.isSelected());
+        actualSpecie.setText(obs.getRequete().getScientific_name());
     }
 
     public void replaceTimeLapsYear(LocalDate debut ,LocalDate fin){
@@ -219,6 +227,7 @@ public class Controller implements Initializable {
     public Label getTimeLapsYear() {
         return timeLapsYear;
     }
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -231,8 +240,15 @@ public class Controller implements Initializable {
         autoCompleteTextField.setRequete(mainRequete);
         autoCompleteTextField.setBtn(rechercheBtn);
 
+        Releve.setCon(this);
 
+        actualSpecie.setOnMouseClicked(e -> {
+            Clipboard clipboard = Clipboard.getSystemClipboard();
+            ClipboardContent content = new ClipboardContent();
+            content.putString(actualSpecie.getText());
+            clipboard.setContent(content);
 
+        });
 
 
         //set color
@@ -260,7 +276,10 @@ public class Controller implements Initializable {
 
         PhongMaterial dot = new PhongMaterial(Color.RED);
 
-       /* try (Reader reader = new FileReader("Delphinidae.json")) {
+        commandTimelaps.setVisible(false);
+        timelapsLabel.setVisible(false);
+        timeLapsYear.setVisible(false);
+        try (Reader reader = new FileReader("Delphinidae.json")) {
             BufferedReader rd = new BufferedReader(reader);
             StringBuilder sb = new StringBuilder();
             int cp;
@@ -269,22 +288,23 @@ public class Controller implements Initializable {
             }
             obs = JsonReader.readJson(sb.toString(), Scale.baseColors);
             obs.setHisto(false);
+            obs.setRequete(mainRequete);
+            obs.getScale().setLegendView(colorLegends, textLabels);
             root3D.getChildren().add(obs);
+            actualSpecie.setText("Delphinidae");
         } catch (IOException e) {
             e.printStackTrace();
-        }*/
+        }
 
-        Requete rq = new Requete("selachii");
-        root3D.getChildren().remove(obs);
-        obs = rq.sendRequest();
-        obs.setHisto(histoButton.isSelected());
-        obs.getScale().setLegendView(colorLegends, textLabels);
-        root3D.getChildren().add(obs);
-        actualSpecie.setText(obs.getRequete().getScientific_name());
+        //Requete rq = new Requete("selachii");
+        //root3D.getChildren().remove(obs);
+        //obs = rq.sendRequest();
+        //obs.setHisto(histoButton.isSelected());
+        //obs.getScale().setLegendView(colorLegends, textLabels);
+        //root3D.getChildren().add(obs);
+        //actualSpecie.setText(obs.getRequete().getScientific_name());
+
         timelapse = new Timelapse(obs, this);
-        commandTimelaps.setVisible(false);
-        timelapsLabel.setVisible(false);
-        timeLapsYear.setVisible(false);
 
         // Add a camera group
         PerspectiveCamera camera = new PerspectiveCamera(true);
@@ -328,6 +348,9 @@ public class Controller implements Initializable {
                 releveScroll.getChildren().clear();
                 releveScroll.getChildren().addAll(listReleve);
 
+                listeSpecies=JsonReader.readReleve(Requete.getGeohashData(GeoHashHelper.getGeohash(location, 3)),false);
+                especeScroll.getChildren().clear();
+                especeScroll.getChildren().addAll(listeSpecies);
 
 
                 //Requete.getGeohashData()

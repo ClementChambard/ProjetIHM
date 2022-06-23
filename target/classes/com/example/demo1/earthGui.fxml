@@ -55,7 +55,7 @@
                                        </VBox.margin>
                                     </DatePicker>
                                     <Separator prefWidth="200.0" />
-                                    <Label fx:id="actualSpecie" alignment="CENTER" text="Actual species ">
+                                    <Label fx:id="actualSpecie" alignment="CENTER" contentDisplay="CENTER" text="Actual species " textAlignment="CENTER">
                                        <VBox.margin>
                                           <Insets left="45.0" />
                                        </VBox.margin>
@@ -100,7 +100,7 @@
                                        <Font size="30.0" />
                                    </font>
                                    <VBox.margin>
-                                       <Insets />
+                                       <Insets bottom="5.0" />
                                    </VBox.margin>
                                </Label>
                                  <ScrollPane hbarPolicy="NEVER" prefHeight="555.0" prefWidth="180.0">
@@ -120,7 +120,30 @@
                   </Tab>
                   <Tab text="espece de la zone">
                       <content>
-                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                               <VBox layoutX="38.0" layoutY="14.0" prefHeight="358.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                   <Label alignment="CENTER" prefWidth="200.0" text="Espèces">
+                                       <font>
+                                           <Font size="30.0" />
+                                       </font>
+                                       <VBox.margin>
+                                           <Insets bottom="5.0" />
+                                       </VBox.margin>
+                                   </Label>
+                                   <ScrollPane hbarPolicy="NEVER" prefHeight="555.0" prefWidth="180.0">
+                                       <content>
+                                           <AnchorPane minHeight="0.0" minWidth="0.0" prefWidth="179.0">
+                                               <children>
+                                                   <VBox fx:id="especeScroll" layoutX="50.0" layoutY="41.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                               </children></AnchorPane>
+                                       </content>
+                                   </ScrollPane>
+                                   <padding>
+                                       <Insets bottom="6.0" left="10.0" right="10.0" top="5.0" />
+                                   </padding>
+                               </VBox>
+                           </children></AnchorPane>
                       </content>
                   </Tab>
       
