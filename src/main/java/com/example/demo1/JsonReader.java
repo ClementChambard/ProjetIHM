@@ -57,18 +57,25 @@ public class JsonReader {
         return names;
     }
 
-    public static ArrayList<Releve> readReleve(String json) {
+    public static ArrayList<Releve> readReleve(String json,boolean allinfo) {
         JSONObject obj = new JSONObject(json);
-        JSONArray array = obj.getJSONArray("results");
+        int total = obj.getInt("total");
         ArrayList<Releve> list = new ArrayList<>();
+        if (total == 0) return list;
+        JSONArray array = obj.getJSONArray("results");
         for (var releve : array)
         {
-            String scientificName = obj.getString("scientificName");
-            String order = obj.getString("order");
-            String superclass = obj.getString("superclass");
-            String recordedBy = obj.getString("recordedBy");
-            String species = obj.getString("species");
-            list.add(new Releve(scientificName, order, superclass, recordedBy, species));
+            String scientificName = "";
+            String recordedBy = "";
+            String order = "";
+            String superclass = "";
+            String species = "";
+            if (((JSONObject) releve).keySet().contains("scientificName")) scientificName = ((JSONObject)releve).getString("scientificName");
+            if (((JSONObject) releve).keySet().contains("order")) order = ((JSONObject)releve).getString("order");
+            if (((JSONObject) releve).keySet().contains("superorder")) superclass = ((JSONObject)releve).getString("superorder");
+            if (((JSONObject) releve).keySet().contains("recordedBy")) recordedBy = ((JSONObject)releve).getString("recordedBy");
+            if (((JSONObject) releve).keySet().contains("species")) species = ((JSONObject)releve).getString("species");
+            list.add(new Releve(scientificName, order, superclass, recordedBy, species,allinfo));
         }
         return list;
     }

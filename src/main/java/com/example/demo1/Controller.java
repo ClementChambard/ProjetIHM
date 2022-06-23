@@ -13,8 +13,10 @@ import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.PickResult;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.MeshView;
@@ -39,6 +41,7 @@ public class Controller implements Initializable {
 
     private Observation obs = null;
     private Timelapse timelapse = null;
+    private ArrayList<Releve> listReleve= null;
 
 
     private Point2D lastMousePosition = null;
@@ -122,6 +125,9 @@ public class Controller implements Initializable {
     @FXML
     private Label timeLapsYear;
 
+    @FXML
+    private VBox releveScroll;
+
 
     private boolean timeLapsOn = false;
 
@@ -157,7 +163,7 @@ public class Controller implements Initializable {
         root3D.getChildren().add(obs);
         actualSpecie.setText(obs.getRequete().getScientific_name());
         timelapse = new Timelapse(obs, this);
-        if ((mainRequete.getDebut().getYear()+5<mainRequete.getFin().getYear())||!timelapse.isInvalid()){
+        if (!(mainRequete.getDebut()==null || mainRequete.getFin()==null) && mainRequete.getDebut().getYear()+5<mainRequete.getFin().getYear()||!timelapse.isInvalid()){
             commandTimelaps.setVisible(true);
             timelapsLabel.setVisible(true);
         }else{
@@ -318,7 +324,12 @@ public class Controller implements Initializable {
                 Point2D loc = Util3D.SpaceCoordToGeoCoord(spaceCoord);
                 // get geo-hash
                 Location location = new Location("mouse", loc.getX(), loc.getY());
-                obs.getRequete().getAtGeohash(GeoHashHelper.getGeohash(location, 3));
+                listReleve = JsonReader.readReleve(obs.getRequete().getAtGeohash(GeoHashHelper.getGeohash(location, 3)),true);
+                releveScroll.getChildren().clear();
+                releveScroll.getChildren().addAll(listReleve);
+
+
+
                 //Requete.getGeohashData()
                 //System.out.println(GeoHashHelper.getGeohash(location, 3));
             }
