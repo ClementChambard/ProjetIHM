@@ -6,6 +6,8 @@ import javafx.scene.paint.PhongMaterial;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 public class JsonReader {
 
     public static Observation readJson(String json, PhongMaterial[] materials) {
@@ -53,6 +55,22 @@ public class JsonReader {
         String[] names = new String[10];
         for (int i = 0; i < n; i++) names[i] = arr.getJSONObject(i).getString("scientificName");
         return names;
+    }
+
+    public static ArrayList<Releve> readReleve(String json) {
+        JSONObject obj = new JSONObject(json);
+        JSONArray array = obj.getJSONArray("results");
+        ArrayList<Releve> list = new ArrayList<>();
+        for (var releve : array)
+        {
+            String scientificName = obj.getString("scientificName");
+            String order = obj.getString("order");
+            String superclass = obj.getString("superclass");
+            String recordedBy = obj.getString("recordedBy");
+            String species = obj.getString("species");
+            list.add(new Releve(scientificName, order, superclass, recordedBy, species));
+        }
+        return list;
     }
 
 }
