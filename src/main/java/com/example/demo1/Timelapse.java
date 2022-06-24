@@ -105,7 +105,7 @@ public class Timelapse {
 
         // create the timeline
         timeline = new Timeline(new KeyFrame(
-                Duration.seconds(.5),
+                Duration.seconds(1.5),
                 ae -> {
                     Observation obs = getNextObservation();
                     c.replaceObs(obs);
