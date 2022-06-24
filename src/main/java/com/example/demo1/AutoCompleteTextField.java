@@ -21,13 +21,22 @@ public class AutoCompleteTextField {
 
     private TextField textField;
 
+    /**
+     * sets the request to update.
+     * @param requete the request to update
+     */
     public void setRequete(Requete requete) {
         this.requete = requete;
     }
 
+    /**
+     * Set the 'recherche' button to turn it on/off when the text field contains a valid/invalid name
+     * @param btn the button to set
+     */
     public void setBtn(Button btn) {
         this.btn = btn;
     }
+
     /** Construct a new AutoCompleteTextField. */
     public AutoCompleteTextField(TextField textField) {
 

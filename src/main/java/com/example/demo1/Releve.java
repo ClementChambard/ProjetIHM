@@ -1,64 +1,60 @@
 package com.example.demo1;
 
-import javafx.event.Event;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.Background;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
 public class Releve extends VBox {
 
-    private String scientificName;
-    private String order;
-    private String superclass;
-    private String recordedBy;
-    private String species;
+    private final String scientificName;
+    private final String order;
+    private final String superClass;
+    private final String recordedBy;
+    private final String species;
 
 
     private static Controller con;
     public static void setCon(Controller c) { con = c; }
 
-    public Releve(String scientificName,String order,String superclass,String recordedBy,String species,boolean allinfo){
+    public Releve(String scientificName,String order,String superClass,String recordedBy,String species,boolean allInfo){
         super();
 
         this.scientificName= scientificName;
 
         this.order = order;
-        this.superclass = superclass;
+        this.superClass = superClass;
         this.recordedBy = recordedBy;
         this.species = species;
         Label labelNom = new Label();
         labelNom.setText(scientificName);
         getChildren().add(labelNom);
-        if (allinfo) {
+        if (allInfo) {
             if (!order.equals("")) {
                 Label labelOrder = new Label();
                 labelOrder.setText("order : " + order);
                 getChildren().add(labelOrder);
             }
-            if (!superclass.equals("")) {
+            if (!superClass.equals("")) {
                 Label labelSuperclass = new Label();
-                labelSuperclass.setText("superclass : " + superclass);
+                labelSuperclass.setText("superclass : " + superClass);
                 getChildren().add(labelSuperclass);
             }
             if (!recordedBy.equals(""))
             {
-                Label labelrecordBy = new Label();
-                labelrecordBy.setText("recorded by : " + recordedBy);
-                getChildren().add(labelrecordBy);
+                Label labelRecordBy = new Label();
+                labelRecordBy.setText("recorded by : " + recordedBy);
+                getChildren().add(labelRecordBy);
             }
             if (!species.equals("")) {
-                Label labelspecies = new Label();
-                labelspecies.setText("species : " + species);
-                getChildren().add(labelspecies);
-                labelspecies.setPadding(new Insets(0, 0, 3, 0));
+                Label labelSpecies = new Label();
+                labelSpecies.setText("species : " + species);
+                getChildren().add(labelSpecies);
+                labelSpecies.setPadding(new Insets(0, 0, 3, 0));
             }
-
-
         }
         else
         {
@@ -95,7 +91,7 @@ public class Releve extends VBox {
         return species;
     }
 
-    public String getSuperclass() {
-        return superclass;
+    public String getSuperClass() {
+        return superClass;
     }
 }
